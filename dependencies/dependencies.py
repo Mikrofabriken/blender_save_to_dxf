@@ -22,7 +22,7 @@ import subprocess
 import importlib
 from collections import namedtuple
 
-from . import auto_load
+from .. import auto_load
 
 Dependency = namedtuple("Dependency", ["module", "package", "name"])
 
@@ -165,7 +165,7 @@ class SAVEASDXF_OT_install_dependencies(bpy.types.Operator):
         global dependencies_installed
         dependencies_installed = True
 
-        bpy.utils.unregister_class(DXFEXPORTERAddonPreferences)
+        bpy.utils.unregister_class(SAVEASDXFAddonPreferences)
         auto_load.init()
         auto_load.register()
 
