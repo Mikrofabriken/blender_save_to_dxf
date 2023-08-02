@@ -101,12 +101,19 @@ class SAVEASDXF_OT_select_objects_as_dxf(bpy.types.Operator):
 
         drawn = 0
         skipped = 0
-        Z = None # will be set on first point
+        layers = []
 
         if len(bpy.context.selected_objects) > 0:
             s = bpy.context.selected_objects
             for o in s:
+                Z = None # will be set on first point
                 if o.type == "MESH":
+                    collection = None
+                    if len(o.users_collection) > 0:
+                        collection = o.users_collection[0].name
+                        if collection not in layers:
+                            layers.append(collection)
+                            doc.layers.add(name=collection) 
                     bpy.context.view_layer.objects.active = o
                     bpy.ops.object.mode_set(mode="EDIT")
                     m = bmesh.from_edit_mesh(o.data) 
@@ -126,6 +133,7 @@ class SAVEASDXF_OT_select_objects_as_dxf(bpy.types.Operator):
                                 points.append( (point2.co[0], point2.co[1]) )
                             else:
                                 skipped += 1
+                                print("Found Z {} on object {}".format(point1.co[2], o.name))
 
                             if len(points) > 1:
                                 edges.append(points)
@@ -137,7 +145,10 @@ class SAVEASDXF_OT_select_objects_as_dxf(bpy.types.Operator):
                     for edge in draw_edges:
                         drawn += 1
                         print("drawing line between {} and {}) ".format(edge[0], edge[1]))
-                        msp.add_lwpolyline(edge)
+                        if collection:
+                            msp.add_lwpolyline(edge, dxfattribs={"layer": "{}".format(collection)})
+                        else:
+                            msp.add_lwpolyline(edge)
 
                 bpy.ops.object.mode_set(mode="OBJECT")
         
