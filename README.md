@@ -7,6 +7,8 @@ There are some quirks. As it's exporting to regular 2D DXF it will establish the
 
 **Heads up:** Transforms will be automatically applied when running the stub. Mostly a convenience as the author of the plugin intermittently forgot to apply before exports. 
 
+The Blender file must be saved before export. Once the file is saved the expored .dxf will end up in the same folder, with the same name but a .dxf extentions instead of .blender.
+
 # In object mode
 Select all objects you want to export, right click and select "Save as DXF". 
 ![image](docs/selected_objects.png)
