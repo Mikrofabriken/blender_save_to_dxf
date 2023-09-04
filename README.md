@@ -5,7 +5,7 @@ It's not meant for a full-blown DXF exporter but as a function similar to Fusion
 
 There are some quirks. As it's exporting to regular 2D DXF it will establish the Z coordinate of the first vertex on an object and only export vertices on the same Z level. Selecting the default cube in Blender will therefore render only the surface at the bottom of the cube, according to the global orientation. 
 
-**Heads up:** Transforms will be automatically applied when running the stub. Mostly a convenience the author always forgot to apply before exports. 
+**Heads up:** Transforms will be automatically applied when running the stub. Mostly a convenience as the author of the plugin intermittently forgot to apply before exports. 
 
 # In object mode
 Select all objects you want to export, right click and select "Save as DXF". 
