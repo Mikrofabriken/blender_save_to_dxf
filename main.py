@@ -13,7 +13,7 @@ class SAVEASDXF_OT_save_face_as_dxf(bpy.types.Operator):
     def set_filename(self):
         if bpy.data.is_saved:
             print("Absolute path: {}".format(os.path.dirname(bpy.data.filepath)))
-            self.filename = "{}/save_as_dxf.dxf".format(os.path.dirname(bpy.data.filepath))
+            self.filename = "{}".format(os.path.splitext(bpy.data.filepath)[0] + ".dxf")
         else:
             self.ShowMessageBox("You need to save the file to a directory before saving to DXF")
 
@@ -39,7 +39,10 @@ class SAVEASDXF_OT_save_face_as_dxf(bpy.types.Operator):
             o = bpy.context.active_object
             if o.mode == 'EDIT' and o.type == "MESH":
                 print("{} is a mesh".format(o.name))
-                m = bmesh.from_edit_mesh(o.data) 
+                if hasattr(o.data, "transform"):
+                        mb = o.matrix_basis
+                        o.data.transform(mb)
+                m = bmesh.from_edit_mesh(o.data)
                 edges = []
                 for f in m.faces:
                     if f.select:
@@ -82,7 +85,7 @@ class SAVEASDXF_OT_select_objects_as_dxf(bpy.types.Operator):
     def set_filename(self):
         if bpy.data.is_saved:
             print("Absolute path: {}".format(os.path.dirname(bpy.data.filepath)))
-            self.filename = "{}/save_as_dxf.dxf".format(os.path.dirname(bpy.data.filepath))
+            self.filename = "{}".format(os.path.splitext(bpy.data.filepath)[0] + ".dxf")
         else:
             self.ShowMessageBox("You need to save the file to a directory before saving to DXF")
 
@@ -108,6 +111,9 @@ class SAVEASDXF_OT_select_objects_as_dxf(bpy.types.Operator):
             for o in s:
                 Z = None # will be set on first point
                 if o.type == "MESH":
+                    if hasattr(o.data, "transform"):
+                        mb = o.matrix_basis
+                        o.data.transform(mb)
                     collection = None
                     if len(o.users_collection) > 0:
                         collection = o.users_collection[0].name
@@ -120,23 +126,23 @@ class SAVEASDXF_OT_select_objects_as_dxf(bpy.types.Operator):
                     print("{} is a mesh".format(o.name))
                     
                     edges = []
-                    for f in m.faces:
-                        for e in f.edges:
-                            points = []
-                            point1 = e.verts[0]
-                            point2 = e.verts[1]
-                            if Z is None:
-                                Z = point1.co[2]
-                                print("Setting Z to export to {}".format(point1.co[2]))
-                            if point1.co[2] == Z and point2.co[2] == Z:
-                                points.append( (point1.co[0], point1.co[1]) )
-                                points.append( (point2.co[0], point2.co[1]) )
-                            else:
-                                skipped += 1
-                                print("Found Z {} on object {}".format(point1.co[2], o.name))
+                    print("{} has {} edges".format(o.name, len(m.edges)))
+                    for e in m.edges:
+                        points = []
+                        point1 = e.verts[0]
+                        point2 = e.verts[1]
+                        if Z is None:
+                            Z = point1.co[2]
+                            print("Setting Z to export to {}".format(point1.co[2]))
+                        if point1.co[2] == Z and point2.co[2] == Z:
+                            points.append( (point1.co[0], point1.co[1]) )
+                            points.append( (point2.co[0], point2.co[1]) )
+                        else:
+                            skipped += 1
+                            print("Found Z {} on object {}".format(point1.co[2], o.name))
 
-                            if len(points) > 1:
-                                edges.append(points)
+                        if len(points) > 1:
+                            edges.append(points)
 
                     # Have edges in a list, but dupes may exist. Remove the dupes
                     edges.sort()
@@ -152,8 +158,11 @@ class SAVEASDXF_OT_select_objects_as_dxf(bpy.types.Operator):
 
                 bpy.ops.object.mode_set(mode="OBJECT")
         
-        doc.saveas(self.filename)
-        self.ShowMessageBox("Saved {} edges to {}, skipped {} due to difference in Z plane".format(drawn, self.filename, skipped))
+        try:
+            doc.saveas(self.filename)
+            self.ShowMessageBox("Saved {} edges to {}, skipped {} due to difference in Z plane".format(drawn, self.filename, skipped))
+        except AttributeError:
+            pass
 
         return {'FINISHED'}
 
