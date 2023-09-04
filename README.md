@@ -10,7 +10,7 @@ Naturally, there are some quirks. As it's exporting to regular 2D DXF it will es
 The Blender file must be saved before export. Once the file is saved the expored .dxf will end up in the same folder, with the same name but a .dxf extentions instead of .blend.
 
 # Requirements
-If you're auditious enough to build yourself this addon require:
+If you're auditious enough to build a zip-file yourself this addon require:
 
 ``` ezdxf ```
 
