@@ -31,7 +31,7 @@ jobs:
           echo "RELEASE_VERSION_SPLIT=${VNUM1},${VNUM2},${VNUM3}" >> $GITHUB_ENV
       - name: Replace version in file
         run: |
-          sed -i'' -e 's/"version" : (0, 0, 0)/"version" : (${{ env.RELEASE_NUMBER_SPLIT }})/g' blender_save_to_dxf/__init__.py
+          sed -i'' -e 's/"version" : (0, 0, 0)/"version" : (${{ env.RELEASE_VERSION_SPLIT }})/g' blender_save_to_dxf/__init__.py
           grep "version" blender_save_to_dxf/__init__.py
       - name: Zipfile
         uses: montudor/action-zip@v1
