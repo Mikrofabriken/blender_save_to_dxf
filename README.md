@@ -1,11 +1,18 @@
 # Blender Save to DXF
 A simple add-on for Blender allowing surfaces or selected 2D-objects to be exported as DXF with maintained dimensions. 
 
-It's not meant for a full-blown DXF exporter but as a function similar to Fusion360 to save a surface to a DXF for laser cutting or import to other tools. 
+It's not meant for a full-blown DXF exporter but as a simple function to save a surface to a DXF-file. The DXF file can then be used by laser cutting or or other tools to do the job. For some, working with Inkscape or Fusion360 is the quickest way to the goal and some picky tools require a known file format to do their job. This is a addon for them.
 
-There are some quirks. As it's exporting to regular 2D DXF it will establish the Z coordinate of the first vertex on an object and only export vertices on the same Z level. Selecting the default cube in Blender will therefore render only the surface at the bottom of the cube, according to the global orientation. 
+Naturally, there are some quirks. As it's exporting to regular 2D DXF it will establish the Z coordinate of the first vertex on an object and only export vertices on the same Z level. Selecting the default cube in Blender will therefore render only the surface at the bottom of the cube, according to the global orientation. 
 
-Also, all transforms and modifiers must be applied to the objects before export, else the result can be different from what you see in the viewport.
+**Heads up:** Transforms will be automatically applied when running the stub. Mostly a convenience as the author of the plugin intermittently forgot to apply before exports. 
+
+The Blender file must be saved before export. Once the file is saved the expored .dxf will end up in the same folder, with the same name but a .dxf extentions instead of .blend. No questions asked, other .DXF files with the same name will be overwritten.
+
+# Requirements
+If you're auditious enough to build a zip-file yourself this addon require:
+
+``` ezdxf ```
 
 # In object mode
 Select all objects you want to export, right click and select "Save as DXF". 
