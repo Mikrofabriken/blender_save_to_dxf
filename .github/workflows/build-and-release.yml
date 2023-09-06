@@ -13,8 +13,8 @@ jobs:
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Zipfile
         uses: montudor/action-zip@v1
-          with:
-            args: zip -qq -r blended_save_to_dxf-$RELEASE_VERSION.zip .
+        with:
+          args: zip -qq -r blended_save_to_dxf-$RELEASE_VERSION.zip .
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
