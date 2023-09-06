@@ -21,7 +21,7 @@ bl_info = {
     "author" : "Ulrik Holmén",
     "description" : "",
     "blender" : (2, 80, 0),
-    "version" : (0, 0, 2),
+    "version" : (0, 0, 0),
     "location" : "",
     "warning" : "",
     "category" : "Generic"
