@@ -14,6 +14,9 @@ If you're auditious enough to build a zip-file yourself this addon require:
 
 ``` ezdxf ```
 
+# Install
+Go to [latest release](https://github.com/Mikrofabriken/blender_save_to_dxf/releases/latest) and download the addon zip-file. Go to Edit/Preferences/Add-ons in Blender and click the install button, select the downloaded zip-file and install. Check the box on "Save_as_dxf" and you should be done. All required dependencies will be automatically installed.
+
 # In object mode
 Select all objects you want to export, right click and select "Save as DXF". 
 ![image](docs/selected_objects.png)
