@@ -20,7 +20,7 @@ jobs:
         run: mkdir -p blender_save_to_dxf
       - name: Copy files
         run: cp -a *.py blender_save_to_dxf
-      - name: Replace version string
+      - name: Get split version string
         run: |
           VERSION=`git describe --abbrev=0 --tags`
           VERSION_BITS=(${VERSION//./ })
@@ -29,7 +29,9 @@ jobs:
           VNUM3=${VERSION_BITS[2]}
           VNUM1=`echo $VNUM1 | sed 's/v//'`
           echo "RELEASE_VERSION_SPLIT=${VNUM1},${VNUM2},${VNUM3}" >> $GITHUB_ENV
-          sed -i 's/"version": \(2, 80, 0\)/"version": \(${{ env.RELEASE_NUMBER_SPLIT }}\)/g' blender_save_to_dxf/__init__.py
+      - name: Replace version in file
+        run: |
+          sed -i 's/"version" : \(0, 0, 0\)/"version" : \(${{ env.RELEASE_NUMBER_SPLIT }}\)/g' blender_save_to_dxf/__init__.py
           grep "version" blender_save_to_dxf/__init__.py
       - name: Zipfile
         uses: montudor/action-zip@v1
